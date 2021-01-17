@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const genres = require('./routes/genres');
+const customers = require('./routes/customers');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const app = express();
@@ -22,6 +23,7 @@ if (app.get('env') === 'development') {
 }
 
 app.use('/api/genres', genres);
+app.use('/api/customers', customers);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}`));
