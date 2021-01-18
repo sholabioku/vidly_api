@@ -18,6 +18,7 @@
   "homepage": "https://github.com/sholabioku/vidly_api#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "fawn": "^2.1.5",
     "helmet": "^4.3.1",
     "joi": "^17.3.0",
     "mongoose": "^5.11.12",
