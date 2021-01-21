@@ -6,14 +6,13 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const { Genre, validate } = require('../models/genre');
 
-router.get('/', async (req, res, next) => {
-  try {
+router.get(
+  '/',
+  asyncMiddleware(async (req, res) => {
     const genres = await Genre.find().sort('name');
     res.send(genres);
-  } catch (ex) {
-    next(ex);
-  }
-});
+  })
+);
 
 router.post('/', auth, async (req, res) => {
   const { error } = validate(req.body);
