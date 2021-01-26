@@ -1,5 +1,7 @@
 require('express-async-errors');
 const config = require('config');
+const winston = require('winston');
+require('winston-mongodb');
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
@@ -7,16 +9,41 @@ const morgan = require('morgan');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 
-const app = express();
-
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
-
 const error = require('./middleware/error');
+
+const app = express();
+
+winston.exceptions.handle(
+  new winston.transports.File({ filename: 'uncaughtExceptions' })
+);
+
+process.on('unhandledRejection', (ex) => {
+  throw ex;
+});
+
+winston.add(
+  new winston.transports.File({
+    filename: 'logfile.log',
+  })
+);
+winston.add(
+  new winston.transports.MongoDB({
+    db: 'mongodb://localhost/vidly',
+    options: {
+      useUnifiedTopology: true,
+    },
+    level: 'info',
+  })
+);
+
+const p = Promise.reject(new Error('Something failed miserably!'));
+p.then(() => console.log('Done'));
 
 if (!config.get('jwtPrivateKey')) {
   console.error('FATAL ERROR: jwtPrivateKey is not defined');
