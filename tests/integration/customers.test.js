@@ -73,6 +73,18 @@ describe('/api/customers', () => {
 
         expect(res.status).toBe(400);
       });
+
+      it("should return 400 if customer's name is more than 50 characters", async () => {
+        const token = new User().generateAuthToken();
+        const name = new Array(52).join('a');
+
+        const res = await request(server)
+          .post('/api/customers')
+          .set('x-auth-token', token)
+          .send({ name, isGold: true, phone: '012345678' });
+
+        expect(res.status).toBe(400);
+      });
     });
   });
 });
