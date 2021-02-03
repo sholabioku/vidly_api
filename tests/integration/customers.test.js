@@ -31,4 +31,21 @@ describe('/api/customers', () => {
       ).toBeTruthy();
     });
   });
+
+  describe('GET /:id', () => {
+    it('should return the customer if vaild id is passed', async () => {
+      const customer = new Customer({
+        name: 'customer1',
+        isGold: true,
+        phone: '012345678',
+      });
+      await customer.save();
+
+      const res = await request(server).get(`/api/customers/${customer._id}`);
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('name', customer.name);
+      expect(res.body).toHaveProperty('isGold', customer.isGold);
+      expect(res.body).toHaveProperty('phone', customer.phone);
+    });
+  });
 });
