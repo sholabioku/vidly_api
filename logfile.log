@@ -208,3 +208,36 @@
 {"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
 {"message":"Server listening on port 3000","level":"info"}
 {"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"metadata":{"stringValue":"\"1\"","kind":"ObjectId","value":"1","path":"_id","reason":{}},"level":"error","message":"Cast to ObjectId failed for value \"1\" at path \"_id\" for model \"Genre\""}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"metadata":{"stringValue":"\"true\"","kind":"ObjectId","value":true,"path":"_id","reason":{}},"level":"error","message":"Cast to ObjectId failed for value \"true\" at path \"_id\" for model \"Genre\""}
+{"metadata":{"stringValue":"\"false\"","kind":"ObjectId","value":false,"path":"_id","reason":{}},"level":"error","message":"Cast to ObjectId failed for value \"false\" at path \"_id\" for model \"Genre\""}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"metadata":{"stringValue":"\"true\"","kind":"ObjectId","value":true,"path":"_id","reason":{}},"level":"error","message":"Cast to ObjectId failed for value \"true\" at path \"_id\" for model \"Genre\""}
+{"metadata":{"stringValue":"\"false\"","kind":"ObjectId","value":false,"path":"_id","reason":{}},"level":"error","message":"Cast to ObjectId failed for value \"false\" at path \"_id\" for model \"Genre\""}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}

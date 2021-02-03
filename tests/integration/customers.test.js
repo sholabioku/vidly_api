@@ -33,7 +33,7 @@ describe('/api/customers', () => {
   });
 
   describe('GET /:id', () => {
-    it('should return the customer if vaild id is passed', async () => {
+    it('should return a customer if vaild id is passed', async () => {
       const customer = new Customer({
         name: 'customer1',
         isGold: true,
