@@ -107,6 +107,25 @@ describe('/api/customers', () => {
 
         expect(res.status).toBe(400);
       });
+
+      it('should save the customer if it is valid', async () => {
+        const token = new User().generateAuthToken();
+
+        await request(server)
+          .post('/api/customers')
+          .set('x-auth-token', token)
+          .send({ name: 'customer1', isGold: true, phone: '012345678' });
+
+        const customer = await Customer.find({
+          name: 'customer1',
+          isGold: true,
+          phone: '012345678',
+        });
+
+        console.log(customer);
+
+        expect(customer).not.toBeNull();
+      });
     });
   });
 });

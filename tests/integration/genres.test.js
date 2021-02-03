@@ -78,13 +78,12 @@ describe('/api/genres', () => {
     it('should save the genre if it is valid', async () => {
       const token = new User().generateAuthToken();
 
-      const res = await request(server)
+      await request(server)
         .post('/api/genres')
         .set('x-auth-token', token)
         .send({ name: 'genre1' });
 
       const genre = await Genre.find({ name: 'genre1' });
-      console.log(genre);
       expect(genre).not.toBeNull();
     });
 
@@ -95,7 +94,6 @@ describe('/api/genres', () => {
         .set('x-auth-token', token)
         .send({ name: 'genre1' });
 
-      console.log(res.body);
       expect(res.body).toHaveProperty('_id');
       expect(res.body).toHaveProperty('name', 'genre1');
     });
