@@ -85,6 +85,16 @@ describe('/api/customers', () => {
 
         expect(res.status).toBe(400);
       });
+
+      it("should return 400 if customer's phone is less than 5 characters", async () => {
+        const token = new User().generateAuthToken();
+        const res = await request(server)
+          .post('/api/customers')
+          .set('x-auth-token', token)
+          .send({ name: '12345', isGold: true, phone: '0123' });
+
+        expect(res.status).toBe(400);
+      });
     });
   });
 });
