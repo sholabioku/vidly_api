@@ -53,4 +53,13 @@ describe('/api/customers', () => {
       expect(res.status).toBe(404);
     });
   });
+
+  describe('/api/customers', () => {
+    it('should return 401 if client is not logged in ', async () => {
+      const res = await request(server)
+        .post('/api/customers')
+        .send({ name: 'customer1', isGold: true, phone: '012345678' });
+      expect(res.status).toBe(401);
+    });
+  });
 });
