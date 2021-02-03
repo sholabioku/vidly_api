@@ -122,9 +122,20 @@ describe('/api/customers', () => {
           phone: '012345678',
         });
 
-        console.log(customer);
-
         expect(customer).not.toBeNull();
+      });
+
+      it('should return the customer if it is valid', async () => {
+        const token = new User().generateAuthToken();
+        const res = await request(server)
+          .post('/api/customers')
+          .set('x-auth-token', token)
+          .send({ name: 'customer1', isGold: true, phone: '012345678' });
+
+        expect(res.body).toHaveProperty('_id');
+        expect(res.body).toHaveProperty('name', 'customer1');
+        expect(res.body).toHaveProperty('isGold', true);
+        expect(res.body).toHaveProperty('phone', '012345678');
       });
     });
   });
