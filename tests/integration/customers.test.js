@@ -1,5 +1,6 @@
 const request = require('supertest');
 const { Customer } = require('../../models/customer');
+const { User } = require('../../models/user');
 
 let server;
 
@@ -55,11 +56,23 @@ describe('/api/customers', () => {
   });
 
   describe('/api/customers', () => {
-    it('should return 401 if client is not logged in ', async () => {
-      const res = await request(server)
-        .post('/api/customers')
-        .send({ name: 'customer1', isGold: true, phone: '012345678' });
-      expect(res.status).toBe(401);
+    describe('POST /', () => {
+      it('should return 401 if client is not logged in ', async () => {
+        const res = await request(server)
+          .post('/api/customers')
+          .send({ name: 'customer1', isGold: true, phone: '012345678' });
+        expect(res.status).toBe(401);
+      });
+
+      it("should return 400 if customer's name is less than 5 characters", async () => {
+        const token = new User().generateAuthToken();
+        const res = await request(server)
+          .post('/api/customers')
+          .set('x-auth-token', token)
+          .send({ name: '1234', isGold: true, phone: '012345678' });
+
+        expect(res.status).toBe(400);
+      });
     });
   });
 });
