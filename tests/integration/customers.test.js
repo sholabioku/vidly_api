@@ -47,5 +47,10 @@ describe('/api/customers', () => {
       expect(res.body).toHaveProperty('isGold', customer.isGold);
       expect(res.body).toHaveProperty('phone', customer.phone);
     });
+
+    it('should return 404 if invaild id is passed', async () => {
+      const res = await request(server).get('/api/customers/1');
+      expect(res.status).toBe(404);
+    });
   });
 });
