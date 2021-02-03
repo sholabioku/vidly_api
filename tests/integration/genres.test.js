@@ -19,7 +19,7 @@ describe('/api/genres', () => {
         { name: 'genre1' },
         { name: 'genre2' },
       ]);
-      //
+
       const res = await request(server).get('/api/genres');
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(2);
