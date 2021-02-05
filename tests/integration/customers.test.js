@@ -57,84 +57,76 @@ describe('/api/customers', () => {
 
   describe('/api/customers', () => {
     describe('POST /', () => {
-      it('should return 401 if client is not logged in ', async () => {
-        const res = await request(server)
+      let token;
+      let name;
+      const exec = async () => {
+        return await request(server)
           .post('/api/customers')
-          .send({ name: 'customer1', isGold: true, phone: '012345678' });
+          .set('x-auth-token', token)
+          .send({ name, phone });
+      };
+
+      beforeEach(() => {
+        token = new User().generateAuthToken();
+        (name = 'customer1'), (phone = '012345678');
+      });
+
+      it('should return 401 if client is not logged in ', async () => {
+        token = '';
+        const res = await exec();
+
         expect(res.status).toBe(401);
       });
 
       it("should return 400 if customer's name is less than 5 characters", async () => {
-        const token = new User().generateAuthToken();
-        const res = await request(server)
-          .post('/api/customers')
-          .set('x-auth-token', token)
-          .send({ name: '1234', isGold: true, phone: '012345678' });
+        name = '1234';
+
+        const res = await exec();
 
         expect(res.status).toBe(400);
       });
 
       it("should return 400 if customer's name is more than 50 characters", async () => {
-        const token = new User().generateAuthToken();
-        const name = new Array(52).join('a');
+        name = new Array(52).join('a');
 
-        const res = await request(server)
-          .post('/api/customers')
-          .set('x-auth-token', token)
-          .send({ name, isGold: true, phone: '012345678' });
+        const res = await exec();
 
         expect(res.status).toBe(400);
       });
 
       it("should return 400 if customer's phone is less than 5 characters", async () => {
-        const token = new User().generateAuthToken();
-        const res = await request(server)
-          .post('/api/customers')
-          .set('x-auth-token', token)
-          .send({ name: '12345', isGold: true, phone: '0123' });
+        name = '1234';
+
+        const res = await exec();
 
         expect(res.status).toBe(400);
       });
 
       it("should return 400 if customer's phone is more than 50 characters", async () => {
-        const token = new User().generateAuthToken();
-        const phone = new Array(52).join('a');
+        phone = new Array(52).join('a');
 
-        const res = await request(server)
-          .post('/api/customers')
-          .set('x-auth-token', token)
-          .send({ name: '12345', isGold: true, phone });
+        const res = await exec();
 
         expect(res.status).toBe(400);
       });
 
       it('should save the customer if it is valid', async () => {
-        const token = new User().generateAuthToken();
-
-        await request(server)
-          .post('/api/customers')
-          .set('x-auth-token', token)
-          .send({ name: 'customer1', isGold: true, phone: '012345678' });
+        await exec();
 
         const customer = await Customer.find({
-          name: 'customer1',
-          isGold: true,
-          phone: '012345678',
+          name,
+          phone,
         });
 
         expect(customer).not.toBeNull();
       });
 
       it('should return the customer if it is valid', async () => {
-        const token = new User().generateAuthToken();
-        const res = await request(server)
-          .post('/api/customers')
-          .set('x-auth-token', token)
-          .send({ name: 'customer1', isGold: true, phone: '012345678' });
+        const res = await exec();
 
         expect(res.body).toHaveProperty('_id');
         expect(res.body).toHaveProperty('name', 'customer1');
-        expect(res.body).toHaveProperty('isGold', true);
+        expect(res.body).toHaveProperty('isGold', false);
         expect(res.body).toHaveProperty('phone', '012345678');
       });
     });
