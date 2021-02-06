@@ -183,8 +183,20 @@ describe('/api/genres', () => {
 
       const updatedGenre = await Genre.findById(genre._id);
 
-      expect(res.body).toHaveProperty('_id');
       expect(updatedGenre.name).toBe('updatedName');
+    });
+
+    it('should return the updated genre if input is valid', async () => {
+      const token = new User().generateAuthToken();
+      const genre = new Genre({ name: 'genre1' });
+      await genre.save();
+      const res = await request(server)
+        .put(`/api/genres/${genre._id}`)
+        .set('x-auth-token', token)
+        .send({ name: 'updatedName' });
+
+      expect(res.body).toHaveProperty('_id');
+      expect(res.body).toHaveProperty('name', 'updatedName');
     });
   });
 });
