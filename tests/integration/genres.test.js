@@ -148,8 +148,25 @@ describe('/api/genres', () => {
 
     it('should return 404 if invalid id is passed', async () => {
       const token = new User().generateAuthToken();
+      const genre = new Genre({ name: 'genre1' });
+      await genre.save();
+
       const res = await request(server)
         .put('/api/genres/1')
+        .set('x-auth-token', token)
+        .send({ name: 'updatedName' });
+      expect(res.status).toBe(404);
+    });
+
+    it('should return 404 if genre with the given id was not found', async () => {
+      const token = new User().generateAuthToken();
+      const genre = new Genre({ name: 'genre1' });
+      await genre.save();
+
+      const id = mongoose.Types.ObjectId();
+
+      const res = await request(server)
+        .put(`/api/genres/${id}`)
         .set('x-auth-token', token)
         .send({ name: 'updatedName' });
       expect(res.status).toBe(404);
