@@ -105,4 +105,17 @@ describe('/api/genres', () => {
       expect(res.body).toHaveProperty('name', 'genre1');
     });
   });
+
+  describe('PUT /:id', () => {
+    it('should return 401 if client is not logged in', async () => {
+      const genre = new Genre({ name: 'genre1' });
+      await genre.save();
+
+      const res = await request(server)
+        .put(`/api/genres/${genre._id}`)
+        .send({ name: 'updatedName' });
+
+      expect(res.status).toBe(401);
+    });
+  });
 });
