@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const request = require('supertest');
 const { Customer } = require('../../models/customer');
 const { User } = require('../../models/user');
@@ -53,82 +54,86 @@ describe('/api/customers', () => {
       const res = await request(server).get('/api/customers/1');
       expect(res.status).toBe(404);
     });
+
+    it('should return 404 if customer with the given id does not exist', async () => {
+      const id = mongoose.Types.ObjectId();
+      const res = await request(server).get(`/api/customers/${id}`);
+      expect(res.status).toBe(404);
+    });
   });
 
-  describe('/api/customers', () => {
-    describe('POST /', () => {
-      let token;
-      let name;
-      const exec = async () => {
-        return await request(server)
-          .post('/api/customers')
-          .set('x-auth-token', token)
-          .send({ name, phone });
-      };
+  describe('POST /', () => {
+    let token;
+    let name;
+    const exec = async () => {
+      return await request(server)
+        .post('/api/customers')
+        .set('x-auth-token', token)
+        .send({ name, phone });
+    };
 
-      beforeEach(() => {
-        token = new User().generateAuthToken();
-        (name = 'customer1'), (phone = '012345678');
+    beforeEach(() => {
+      token = new User().generateAuthToken();
+      (name = 'customer1'), (phone = '012345678');
+    });
+
+    it('should return 401 if client is not logged in ', async () => {
+      token = '';
+      const res = await exec();
+
+      expect(res.status).toBe(401);
+    });
+
+    it("should return 400 if customer's name is less than 5 characters", async () => {
+      name = '1234';
+
+      const res = await exec();
+
+      expect(res.status).toBe(400);
+    });
+
+    it("should return 400 if customer's name is more than 50 characters", async () => {
+      name = new Array(52).join('a');
+
+      const res = await exec();
+
+      expect(res.status).toBe(400);
+    });
+
+    it("should return 400 if customer's phone is less than 5 characters", async () => {
+      name = '1234';
+
+      const res = await exec();
+
+      expect(res.status).toBe(400);
+    });
+
+    it("should return 400 if customer's phone is more than 50 characters", async () => {
+      phone = new Array(52).join('a');
+
+      const res = await exec();
+
+      expect(res.status).toBe(400);
+    });
+
+    it('should save the customer if it is valid', async () => {
+      await exec();
+
+      const customer = await Customer.find({
+        name,
+        phone,
       });
 
-      it('should return 401 if client is not logged in ', async () => {
-        token = '';
-        const res = await exec();
+      expect(customer).not.toBeNull();
+    });
 
-        expect(res.status).toBe(401);
-      });
+    it('should return the customer if it is valid', async () => {
+      const res = await exec();
 
-      it("should return 400 if customer's name is less than 5 characters", async () => {
-        name = '1234';
-
-        const res = await exec();
-
-        expect(res.status).toBe(400);
-      });
-
-      it("should return 400 if customer's name is more than 50 characters", async () => {
-        name = new Array(52).join('a');
-
-        const res = await exec();
-
-        expect(res.status).toBe(400);
-      });
-
-      it("should return 400 if customer's phone is less than 5 characters", async () => {
-        name = '1234';
-
-        const res = await exec();
-
-        expect(res.status).toBe(400);
-      });
-
-      it("should return 400 if customer's phone is more than 50 characters", async () => {
-        phone = new Array(52).join('a');
-
-        const res = await exec();
-
-        expect(res.status).toBe(400);
-      });
-
-      it('should save the customer if it is valid', async () => {
-        await exec();
-
-        const customer = await Customer.find({
-          name,
-          phone,
-        });
-
-        expect(customer).not.toBeNull();
-      });
-
-      it('should return the customer if it is valid', async () => {
-        const res = await exec();
-
-        expect(res.body).toHaveProperty('_id');
-        expect(res.body).toHaveProperty('name', 'customer1');
-        expect(res.body).toHaveProperty('isGold', false);
-        expect(res.body).toHaveProperty('phone', '012345678');
-      });
+      expect(res.body).toHaveProperty('_id');
+      expect(res.body).toHaveProperty('name', 'customer1');
+      expect(res.body).toHaveProperty('isGold', false);
+      expect(res.body).toHaveProperty('phone', '012345678');
     });
   });
 });
