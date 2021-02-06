@@ -130,5 +130,20 @@ describe('/api/genres', () => {
 
       expect(res.status).toBe(400);
     });
+
+    it('should return 400 if genre is more than 50 characters', async () => {
+      const token = new User().generateAuthToken();
+      const genre = new Genre({ name: 'genre1' });
+      await genre.save();
+
+      const name = new Array(52).join('a');
+
+      const res = await request(server)
+        .put(`/api/genres/${genre._id}`)
+        .set('x-auth-token', token)
+        .send({ name });
+
+      expect(res.status).toBe(400);
+    });
   });
 });
