@@ -171,5 +171,20 @@ describe('/api/genres', () => {
         .send({ name: 'updatedName' });
       expect(res.status).toBe(404);
     });
+
+    it('should update the genre if input is vaild', async () => {
+      const token = new User().generateAuthToken();
+      const genre = new Genre({ name: 'genre1' });
+      await genre.save();
+      const res = await request(server)
+        .put(`/api/genres/${genre._id}`)
+        .set('x-auth-token', token)
+        .send({ name: 'updatedName' });
+
+      const updatedGenre = await Genre.findById(genre._id);
+
+      expect(res.body).toHaveProperty('_id');
+      expect(updatedGenre.name).toBe('updatedName');
+    });
   });
 });
