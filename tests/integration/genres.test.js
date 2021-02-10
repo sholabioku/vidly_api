@@ -215,5 +215,12 @@ describe('/api/genres', () => {
       const res = await exec();
       expect(res.status).toBe(404);
     });
+
+    it('should return 404 if genre with the given id was not found', async () => {
+      id = mongoose.Types.ObjectId();
+
+      const res = await exec();
+      expect(res.status).toBe(404);
+    });
   });
 });
