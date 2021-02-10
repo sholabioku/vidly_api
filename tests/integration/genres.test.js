@@ -175,4 +175,32 @@ describe('/api/genres', () => {
       expect(res.body).toHaveProperty('name', newName);
     });
   });
+
+  describe('DELETE /:id', () => {
+    let token;
+    let genre;
+    let id;
+
+    const exec = async () => {
+      return await request(server)
+        .delete(`/api/genres/${id}`)
+        .set('x-auth-token', token)
+        .send();
+    };
+
+    beforeEach(async () => {
+      genre = new Genre({ name: 'genre1' });
+      await genre.save();
+
+      token = new User({ isAdmin: true }).generateAuthToken();
+      id = genre._id;
+    });
+
+    it('should return 401 if client is not logged in', async () => {
+      token = '';
+
+      const res = await exec();
+      expect(res.status).toBe(401);
+    });
+  });
 });
