@@ -265,11 +265,18 @@ describe('/api/customers', () => {
       expect(res.status).toBe(404);
     });
 
-    it('should remove the customer if input is valid', async () => {
+    it('should delete the customer if input is valid', async () => {
       await exec();
 
       const customerInDb = await Customer.findById(id);
       expect(customerInDb).toBeNull();
+    });
+
+    it('should return the removed customer', async () => {
+      const res = await exec();
+      expect(res.body).toHaveProperty('_id');
+      expect(res.body).toHaveProperty('name', 'customer1');
+      expect(res.body).toHaveProperty('phone', 'phone1');
     });
   });
 });
