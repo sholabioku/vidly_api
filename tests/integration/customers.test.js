@@ -198,5 +198,11 @@ describe('/api/customers', () => {
       const res = await exec();
       expect(res.status).toBe(404);
     });
+
+    it('should return 404 if customer with the given id was not found', async () => {
+      id = mongoose.Types.ObjectId();
+      const res = await exec();
+      expect(res.status).toBe(404);
+    });
   });
 });
