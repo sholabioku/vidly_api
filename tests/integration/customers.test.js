@@ -211,5 +211,12 @@ describe('/api/customers', () => {
       expect(customerInDb.name).toBe(newName);
       expect(customerInDb.phone).toBe(newPhone);
     });
+
+    it('should return the customer if input is valid', async () => {
+      const res = await exec();
+      expect(res.body).toHaveProperty('_id');
+      expect(res.body).toHaveProperty('name', newName);
+      expect(res.body).toHaveProperty('phone', newPhone);
+    });
   });
 });
