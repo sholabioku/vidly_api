@@ -204,5 +204,12 @@ describe('/api/customers', () => {
       const res = await exec();
       expect(res.status).toBe(404);
     });
+
+    it('should update the customer if input is valid', async () => {
+      await exec();
+      const customerInDb = await Customer.findById(id);
+      expect(customerInDb.name).toBe(newName);
+      expect(customerInDb.phone).toBe(newPhone);
+    });
   });
 });

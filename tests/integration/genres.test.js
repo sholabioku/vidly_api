@@ -165,7 +165,7 @@ describe('/api/genres', () => {
 
     it('should update the genre if input is vaild', async () => {
       await exec();
-      const updatedGenre = await Genre.findById(genre._id);
+      const updatedGenre = await Genre.findById(id);
       expect(updatedGenre.name).toBe(newName);
     });
 
