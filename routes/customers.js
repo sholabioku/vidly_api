@@ -51,7 +51,7 @@ router.put('/:id', [auth, validateObjectId], async (req, res) => {
   res.send(customer);
 });
 
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', [auth, admin, validateObjectId], async (req, res) => {
   const customer = await Customer.findByIdAndRemove(req.params.id);
 
   if (!customer)
