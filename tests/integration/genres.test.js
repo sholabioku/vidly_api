@@ -222,5 +222,11 @@ describe('/api/genres', () => {
       const res = await exec();
       expect(res.status).toBe(404);
     });
+
+    it('should delete the genre if input is valid', async () => {
+      await exec();
+      const genreInDb = await Genre.findById(id);
+      expect(genreInDb).toBeNull();
+    });
   });
 });
