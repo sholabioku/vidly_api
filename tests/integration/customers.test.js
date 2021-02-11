@@ -219,4 +219,31 @@ describe('/api/customers', () => {
       expect(res.body).toHaveProperty('phone', newPhone);
     });
   });
+
+  describe('DELETE /:id', () => {
+    let token;
+    let customer;
+    let id;
+
+    const exec = async () => {
+      return await request(server)
+        .delete(`/api/customers/${id}`)
+        .set('x-auth-token', token)
+        .send();
+    };
+
+    beforeEach(async () => {
+      customer = new Customer({ name: 'customer1', phone: 'phone1' });
+      await customer.save();
+
+      token = new User({ isAdmin: true }).generateAuthToken();
+      id = customer._id;
+    });
+
+    it('should return 401 if client is not logged in', async () => {
+      token = '';
+      const res = await exec();
+      expect(res.status).toBe(401);
+    });
+  });
 });
