@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/', (req, res, next) => {
+  if (!req.body.customerId)
+    return res.status(400).send('CustomerId not provided');
   res.status(401).send('Unauthorized!');
 });
 
