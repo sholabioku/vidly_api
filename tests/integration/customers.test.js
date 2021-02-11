@@ -245,5 +245,11 @@ describe('/api/customers', () => {
       const res = await exec();
       expect(res.status).toBe(401);
     });
+
+    it('should return 403 if client is not admin', async () => {
+      token = new User({ isAdmin: false }).generateAuthToken();
+      const res = await exec();
+      expect(res.status).toBe(403);
+    });
   });
 });
