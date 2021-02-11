@@ -228,5 +228,11 @@ describe('/api/genres', () => {
       const genreInDb = await Genre.findById(id);
       expect(genreInDb).toBeNull();
     });
+
+    it('should return the removed genre', async () => {
+      const res = await exec();
+      expect(res.body).toHaveProperty('_id');
+      expect(res.body).toHaveProperty('name', 'genre1');
+    });
   });
 });
