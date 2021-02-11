@@ -175,6 +175,12 @@ describe('/api/customers', () => {
       expect(res.status).toBe(400);
     });
 
+    it("should return 400 if customer's name is more than 50 characters", async () => {
+      newName = new Array(52).join('a');
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
     it("should return 400 if customer's phone is less than 5 characters", async () => {
       newPhone = '1234';
       const res = await exec();
