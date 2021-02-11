@@ -168,5 +168,11 @@ describe('/api/customers', () => {
       const res = await exec();
       expect(res.status).toBe(401);
     });
+
+    it("should return 400 if customer's name is less than 5 characters", async () => {
+      newName = '1234';
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
   });
 });
