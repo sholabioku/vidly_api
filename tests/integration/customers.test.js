@@ -186,5 +186,11 @@ describe('/api/customers', () => {
       const res = await exec();
       expect(res.status).toBe(400);
     });
+
+    it("should return 400 if customer's phone is more than 50 characters", async () => {
+      newPhone = new Array(52).join('a');
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
   });
 });
