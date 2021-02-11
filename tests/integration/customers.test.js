@@ -74,7 +74,8 @@ describe('/api/customers', () => {
 
     beforeEach(() => {
       token = new User().generateAuthToken();
-      (name = 'customer1'), (phone = '012345678');
+      name = 'customer1';
+      phone = '012345678';
     });
 
     it('should return 401 if client is not logged in ', async () => {
@@ -134,6 +135,38 @@ describe('/api/customers', () => {
       expect(res.body).toHaveProperty('name', 'customer1');
       expect(res.body).toHaveProperty('isGold', false);
       expect(res.body).toHaveProperty('phone', '012345678');
+    });
+  });
+
+  describe('PUT /:id', () => {
+    let token;
+    let newName;
+    let newPhone;
+    let customer;
+    let id;
+
+    const exec = async () => {
+      return await request(server)
+        .put(`/api/customers/${id}`)
+        .set('x-auth-token', token)
+        .send({ name: newName, phone: newPhone });
+    };
+
+    beforeEach(async () => {
+      customer = new Customer({ name: 'customer1', phone: 'phone1' });
+      await customer.save();
+
+      token = new User().generateAuthToken();
+      newName = 'updatedName';
+      newPhone = 'updatedPhone';
+      id = customer._id;
+    });
+
+    it('should return 401 if client is not logged in', async () => {
+      token = '';
+
+      const res = await exec();
+      expect(res.status).toBe(401);
     });
   });
 });
