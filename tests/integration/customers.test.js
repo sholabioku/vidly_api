@@ -192,5 +192,11 @@ describe('/api/customers', () => {
       const res = await exec();
       expect(res.status).toBe(400);
     });
+
+    it('should return 404 if id is invalid', async () => {
+      id = 1;
+      const res = await exec();
+      expect(res.status).toBe(404);
+    });
   });
 });
