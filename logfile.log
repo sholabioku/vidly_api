@@ -1081,3 +1081,37 @@
 {"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
 {"message":"Server listening on port 3000","level":"info"}
 {"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"metadata":{"code":"ERR_HTTP_HEADERS_SENT"},"level":"error","message":"Cannot set headers after they are sent to the client"}
+{"metadata":{"code":"ERR_HTTP_HEADERS_SENT"},"level":"error","message":"Cannot set headers after they are sent to the client"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
+{"message":"Server listening on port 3000","level":"info"}
+{"message":"Connected to mongodb://localhost/vidly_test...","level":"info"}
