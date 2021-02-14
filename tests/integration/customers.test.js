@@ -11,7 +11,7 @@ describe('/api/customers', () => {
   });
 
   afterEach(async () => {
-    server.close();
+    await server.close();
     await Customer.deleteMany({});
   });
 
