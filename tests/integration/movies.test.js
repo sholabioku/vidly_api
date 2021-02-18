@@ -97,5 +97,11 @@ describe('/api/movies', () => {
       const res = await exec();
       expect(res.status).toBe(401);
     });
+
+    it('should return 400 if title is less than 5 characters', async () => {
+      title = '1234';
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
   });
 });
