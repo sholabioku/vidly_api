@@ -3,8 +3,10 @@ const router = express.Router();
 
 const { Movie, validate } = require('../models/movie');
 const { Genre } = require('../models/genre');
+
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const validateObjectId = require('../middleware/validateObjectId');
 
 router.get('/', async (req, res) => {
   const movies = await Movie.find().sort('name');
@@ -72,7 +74,7 @@ router.delete('/:id', [auth, admin], async (req, res) => {
   res.send(movie);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', validateObjectId, async (req, res) => {
   const movie = await Movie.findById(req.params.id);
 
   if (!movie)

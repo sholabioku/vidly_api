@@ -60,5 +60,10 @@ describe('/api/movies', () => {
       const res = await request(server).get(`/api/movies/${id}`);
       expect(res.status).toBe(404);
     });
+
+    it('should return 404 if id is invalid', async () => {
+      const res = await request(server).get(`/api/movies/1`);
+      expect(res.status).toBe(404);
+    });
   });
 });
