@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const request = require('supertest');
 const { Movie } = require('../../models/movie');
 
@@ -52,6 +53,12 @@ describe('/api/movies', () => {
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('_id');
       expect(res.body).toHaveProperty('title', '12345');
+    });
+
+    it('should return 404 if movie with the id does not exist', async () => {
+      const id = mongoose.Types.ObjectId();
+      const res = await request(server).get(`/api/movies/${id}`);
+      expect(res.status).toBe(404);
     });
   });
 });
