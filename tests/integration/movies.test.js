@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
+
+const { User } = require('../../models/user');
 const { Movie } = require('../../models/movie');
 
 describe('/api/movies', () => {
@@ -38,7 +40,7 @@ describe('/api/movies', () => {
     });
   });
 
-  describe('/api/:id', () => {
+  describe('GET /:id', () => {
     it('should return a movie if valid id is passed', async () => {
       const movie = new Movie({
         title: '12345',
@@ -64,6 +66,36 @@ describe('/api/movies', () => {
     it('should return 404 if id is invalid', async () => {
       const res = await request(server).get(`/api/movies/1`);
       expect(res.status).toBe(404);
+    });
+  });
+
+  describe('POST /', () => {
+    let token;
+    let title;
+    let genre;
+    let dailyRentalRate;
+    let numberInStock;
+
+    const exec = async () => {
+      return await request(server)
+        .post('/api/movies')
+        .set('x-auth-token', token)
+        .send({ title, genre, dailyRentalRate, numberInStock });
+    };
+
+    beforeEach(async () => {
+      token = new User().generateAuthToken();
+      title = '12345';
+      genre = { name: '12345' };
+      dailyRentalRate = 2;
+      numberInStock = 10;
+    });
+
+    it('should return 401 if client is not logged in', async () => {
+      token = '';
+
+      const res = await exec();
+      expect(res.status).toBe(401);
     });
   });
 });
