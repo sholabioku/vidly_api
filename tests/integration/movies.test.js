@@ -109,5 +109,17 @@ describe('/api/movies', () => {
       const res = await exec();
       expect(res.status).toBe(400);
     });
+
+    it('should save the movie if it is valid', async () => {
+      await exec();
+
+      const movie = await Movie.find({
+        title,
+        genre,
+        dailyRentalRate,
+        numberInStock,
+      });
+      expect(movie).not.toBeNull();
+    });
   });
 });
