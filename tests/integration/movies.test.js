@@ -36,4 +36,22 @@ describe('/api/movies', () => {
       expect(res.body.some((movie) => movie.title === '12345')).toBeTruthy();
     });
   });
+
+  describe('/api/:id', () => {
+    it('should return a movie if valid id is passed', async () => {
+      const movie = new Movie({
+        title: '12345',
+        dailyRentalRate: 2,
+        genre: { name: '12345' },
+        numberInStock: 10,
+      });
+
+      await movie.save();
+
+      const res = await request(server).get(`/api/movies/${movie._id}`);
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('_id');
+      expect(res.body).toHaveProperty('title', '12345');
+    });
+  });
 });
