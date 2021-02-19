@@ -3,6 +3,7 @@ const request = require('supertest');
 
 const { User } = require('../../models/user');
 const { Movie } = require('../../models/movie');
+const { Genre } = require('../../models/genre');
 
 describe('/api/movies', () => {
   let server;
@@ -13,6 +14,7 @@ describe('/api/movies', () => {
 
   afterEach(async () => {
     await server.close();
+    await Genre.deleteMany({});
     await Movie.deleteMany({});
   });
 
@@ -73,6 +75,7 @@ describe('/api/movies', () => {
     let token;
     let title;
     let genre;
+    let genreId;
     let dailyRentalRate;
     let numberInStock;
 
@@ -80,13 +83,16 @@ describe('/api/movies', () => {
       return await request(server)
         .post('/api/movies')
         .set('x-auth-token', token)
-        .send({ title, genre, dailyRentalRate, numberInStock });
+        .send({ title, genreId, dailyRentalRate, numberInStock });
     };
 
     beforeEach(async () => {
+      genre = new Genre({ name: '12345' });
+      await genre.save();
+
       token = new User().generateAuthToken();
       title = '12345';
-      genre = { name: '12345' };
+      genreId = genre._id;
       dailyRentalRate = 2;
       numberInStock = 10;
     });
@@ -110,15 +116,21 @@ describe('/api/movies', () => {
       expect(res.status).toBe(400);
     });
 
+    it('should return 400 for invalid genre', async () => {
+      genreId = 1;
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
     it('should save the movie if it is valid', async () => {
       await exec();
-
       const movie = await Movie.find({
         title,
-        genre,
+        genreId,
         dailyRentalRate,
         numberInStock,
       });
+
       expect(movie).not.toBeNull();
     });
   });
