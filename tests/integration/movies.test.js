@@ -133,5 +133,12 @@ describe('/api/movies', () => {
 
       expect(movie).not.toBeNull();
     });
+
+    it('should return the movie if it is valid', async () => {
+      const res = await exec();
+
+      expect(res.body).toHaveProperty('_id');
+      expect(res.body).toHaveProperty('title', '12345');
+    });
   });
 });
