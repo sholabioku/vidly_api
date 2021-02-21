@@ -72,70 +72,72 @@ describe('/api/movies', () => {
   });
 
   describe('POST /', () => {
-    let token;
-    let title;
-    let genre;
-    let genreId;
-    let dailyRentalRate;
-    let numberInStock;
-
-    const exec = async () => {
-      return await request(server)
-        .post('/api/movies')
-        .set('x-auth-token', token)
-        .send({ title, genreId, dailyRentalRate, numberInStock });
-    };
-
-    beforeEach(async () => {
-      genre = new Genre({ name: '12345' });
+    it('should return 401 if client is not logged in', async () => {
+      const genre = new Genre({ name: '12345' });
       await genre.save();
 
-      token = new User().generateAuthToken();
-      title = '12345';
-      genreId = genre._id;
-      dailyRentalRate = 2;
-      numberInStock = 10;
-    });
-
-    it('should return 401 if client is not logged in', async () => {
-      token = '';
-
-      const res = await exec();
+      const res = await request(server).post('/api/movies').send({
+        title: '12345',
+        genreId: genre._id,
+        dailyRentalRate: 2,
+        numberInStock: 10,
+      });
       expect(res.status).toBe(401);
     });
 
-    it('should return 400 if title is less than 5 characters', async () => {
-      title = '1234';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
+    it('should save the movie if input is valid', async () => {
+      const genre = new Genre({ name: '12345' });
+      await genre.save();
 
-    it('should return 400 if title is more than 50 characters', async () => {
-      title = new Array(52).join('a');
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
+      const token = new User().generateAuthToken();
 
-    it('should return 400 for invalid genre', async () => {
-      genreId = 1;
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
+      const res = await request(server)
+        .post('/api/movies')
+        .set('x-auth-token', token)
+        .send({
+          title: '12345',
+          genreId: genre._id,
+          dailyRentalRate: 2,
+          numberInStock: 10,
+        });
 
-    it('should save the movie if it is valid', async () => {
-      await exec();
-      const movie = await Movie.find({
-        title,
-        genreId,
-        dailyRentalRate,
-        numberInStock,
+      const movieId = mongoose.Types.ObjectId();
+
+      const movie = new Movie({
+        _id: movieId,
+        title: '12345',
+        genre: { _id: genre._id, name: '12345' },
+        dailyRentalRate: 2,
+        numberInStock: 10,
       });
 
-      expect(movie).not.toBeNull();
+      await movie.save();
+
+      const movieInDb = await Movie.find({
+        _id: movieId,
+        title: '12345',
+        genre: { _id: genre._id, name: '12345' },
+        dailyRentalRate: 2,
+        numberInStock: 10,
+      });
+      expect(movieInDb).not.toBeNull();
     });
 
-    it('should return the movie if it is valid', async () => {
-      const res = await exec();
+    it('should return the movie if input is valid', async () => {
+      const genre = new Genre({ name: '12345' });
+      await genre.save();
+
+      const token = new User().generateAuthToken();
+
+      const res = await request(server)
+        .post('/api/movies')
+        .set('x-auth-token', token)
+        .send({
+          title: '12345',
+          genreId: genre._id,
+          dailyRentalRate: 2,
+          numberInStock: 10,
+        });
 
       expect(res.body).toHaveProperty('_id');
       expect(res.body).toHaveProperty('title', '12345');
