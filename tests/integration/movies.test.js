@@ -159,6 +159,12 @@ describe('/api/movies', () => {
       expect(res.status).toBe(400);
     });
 
+    it('should return 400 if numberInStock is negative number', async () => {
+      numberInStock = -1;
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
     it('should save the movie if input is valid', async () => {
       await exec();
 
