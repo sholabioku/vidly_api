@@ -153,5 +153,13 @@ describe('/api/rentals', () => {
       const res = await exec();
       expect(res.status).toBe(400);
     });
+
+    it('should return rental if input is valid', async () => {
+      const res = await exec();
+      await Rental.findById(rental._id);
+      expect(res.body).toHaveProperty('dateOut');
+      expect(res.body).toHaveProperty('movie');
+      expect(res.body).toHaveProperty('customer');
+    });
   });
 });
