@@ -375,5 +375,11 @@ describe('/api/movies', () => {
       const movieInDb = await Movie.findById(id);
       expect(movieInDb).toBeNull();
     });
+
+    it('should return the removed movie', async () => {
+      const res = await exec();
+      expect(res.body).toHaveProperty('_id');
+      expect(res.body).toHaveProperty('title', '12345');
+    });
   });
 });
