@@ -74,6 +74,8 @@ describe('/api/movies', () => {
   describe('POST /', () => {
     let token;
     let genre;
+    let movie;
+    let movieId;
 
     const exec = async () => {
       return await request(server)
@@ -89,9 +91,20 @@ describe('/api/movies', () => {
 
     beforeEach(async () => {
       token = new User().generateAuthToken();
+      movieId = mongoose.Types.ObjectId();
 
       genre = new Genre({ name: '12345' });
       await genre.save();
+
+      movie = new Movie({
+        _id: movieId,
+        title: '12345',
+        genre: { _id: genre._id, name: '12345' },
+        dailyRentalRate: 2,
+        numberInStock: 10,
+      });
+
+      await movie.save();
     });
 
     it('should return 401 if client is not logged in', async () => {
@@ -102,18 +115,6 @@ describe('/api/movies', () => {
 
     it('should save the movie if input is valid', async () => {
       await exec();
-
-      const movieId = mongoose.Types.ObjectId();
-
-      const movie = new Movie({
-        _id: movieId,
-        title: '12345',
-        genre: { _id: genre._id, name: '12345' },
-        dailyRentalRate: 2,
-        numberInStock: 10,
-      });
-
-      await movie.save();
 
       const movieInDb = await Movie.find({
         _id: movieId,
