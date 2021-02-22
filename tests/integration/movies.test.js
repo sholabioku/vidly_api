@@ -307,4 +307,50 @@ describe('/api/movies', () => {
       expect(res.body).toHaveProperty('title', 'updatedTitle');
     });
   });
+
+  describe('DELETE /:id', () => {
+    let token;
+    let newTitle;
+    let newDailyRentalRate;
+    let newNumberInStock;
+    let id;
+    let movie;
+    let movieId;
+    let genreId;
+    let genre;
+
+    const exec = async () => {
+      return await request(server)
+        .put(`/api/movies/${id}`)
+        .set('x-auth-token', token)
+        .send();
+    };
+
+    beforeEach(async () => {
+      genre = new Genre({ name: '12345' });
+      await genre.save();
+
+      token = new User().generateAuthToken();
+      movieId = mongoose.Types.ObjectId();
+      genreId = genre._id;
+
+      movie = new Movie({
+        _id: movieId,
+        title: '12345',
+        genre: { _id: genreId, name: '12345' },
+        dailyRentalRate: 10,
+        numberInStock: 2,
+      });
+
+      await movie.save();
+
+      id = movie._id;
+    });
+
+    it('should return 401 if client is not logged in', async () => {
+      token = '';
+      const res = await exec();
+      expect(res.status).toBe(401);
+    });
+  });
 });
