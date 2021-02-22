@@ -126,6 +126,13 @@ describe('/api/movies', () => {
       expect(res.status).toBe(400);
     });
 
+    it('should return 400 if title is more than 50 characters', async () => {
+      title = new Array(52).join('a');
+
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
     it('should save the movie if input is valid', async () => {
       await exec();
 
