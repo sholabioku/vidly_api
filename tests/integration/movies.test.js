@@ -369,5 +369,11 @@ describe('/api/movies', () => {
       const res = await exec();
       expect(res.status).toBe(404);
     });
+
+    it('should delete the movie if input is valid', async () => {
+      await exec();
+      const movieInDb = await Movie.findById(id);
+      expect(movieInDb).toBeNull();
+    });
   });
 });
