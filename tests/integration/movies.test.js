@@ -362,5 +362,12 @@ describe('/api/movies', () => {
       const res = await exec();
       expect(res.status).toBe(404);
     });
+
+    it('should return 404 if movie with the given id was not found', async () => {
+      id = mongoose.Types.ObjectId();
+
+      const res = await exec();
+      expect(res.status).toBe(404);
+    });
   });
 });
