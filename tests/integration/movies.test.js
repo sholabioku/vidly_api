@@ -74,6 +74,7 @@ describe('/api/movies', () => {
   describe('POST /', () => {
     let token;
     let genre;
+    let genreId;
     let movie;
     let movieId;
     let title;
@@ -86,26 +87,27 @@ describe('/api/movies', () => {
         .set('x-auth-token', token)
         .send({
           title,
-          genreId: genre._id,
+          genreId,
           dailyRentalRate,
           numberInStock,
         });
     };
 
     beforeEach(async () => {
+      genre = new Genre({ name: '12345' });
+      await genre.save();
+
       token = new User().generateAuthToken();
       movieId = mongoose.Types.ObjectId();
       title = '12345';
       dailyRentalRate = 10;
       numberInStock = 2;
-
-      genre = new Genre({ name: '12345' });
-      await genre.save();
+      genreId = genre._id;
 
       movie = new Movie({
         _id: movieId,
         title,
-        genre: { _id: genre._id, name: '12345' },
+        genre: { _id: genreId, name: '12345' },
         dailyRentalRate,
         numberInStock,
       });
@@ -129,6 +131,12 @@ describe('/api/movies', () => {
     it('should return 400 if title is more than 50 characters', async () => {
       title = new Array(52).join('a');
 
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 if invalid genre is passed', async () => {
+      genreId = 1;
       const res = await exec();
       expect(res.status).toBe(400);
     });
