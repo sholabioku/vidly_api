@@ -283,6 +283,12 @@ describe('/api/movies', () => {
       expect(res.status).toBe(400);
     });
 
+    it('should return 404 if invalid id is passed', async () => {
+      id = 1;
+      const res = await exec();
+      expect(res.status).toBe(404);
+    });
+
     it('should update the movie if input is vaild', async () => {
       await exec();
       const updatedMovie = await Movie.findById(id);
