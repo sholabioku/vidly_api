@@ -56,5 +56,11 @@ describe('/api/rentals', () => {
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('_id');
     });
+
+    it('should return 404 if movie with the id does not exist', async () => {
+      const id = mongoose.Types.ObjectId();
+      const res = await request(server).get(`/api/rentals/${id}`);
+      expect(res.status).toBe(404);
+    });
   });
 });
