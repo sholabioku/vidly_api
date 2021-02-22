@@ -136,7 +136,8 @@ describe('/api/movies', () => {
     });
 
     it('should return 400 if invalid genre is passed', async () => {
-      genreId = 1;
+      await Genre.deleteMany({});
+
       const res = await exec();
       expect(res.status).toBe(400);
     });
@@ -279,6 +280,13 @@ describe('/api/movies', () => {
 
     it('should return 400 if numberInStock is negative number', async () => {
       newNumberInStock = -1;
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 if invalid genre is passed', async () => {
+      await Genre.deleteMany({});
+
       const res = await exec();
       expect(res.status).toBe(400);
     });
