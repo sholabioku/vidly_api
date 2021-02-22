@@ -76,32 +76,38 @@ describe('/api/movies', () => {
     let genre;
     let movie;
     let movieId;
+    let title;
+    let dailyRentalRate;
+    let numberInStock;
 
     const exec = async () => {
       return await request(server)
         .post('/api/movies')
         .set('x-auth-token', token)
         .send({
-          title: '12345',
+          title,
           genreId: genre._id,
-          dailyRentalRate: 2,
-          numberInStock: 10,
+          dailyRentalRate,
+          numberInStock,
         });
     };
 
     beforeEach(async () => {
       token = new User().generateAuthToken();
       movieId = mongoose.Types.ObjectId();
+      title = '12345';
+      dailyRentalRate = 10;
+      numberInStock = 2;
 
       genre = new Genre({ name: '12345' });
       await genre.save();
 
       movie = new Movie({
         _id: movieId,
-        title: '12345',
+        title,
         genre: { _id: genre._id, name: '12345' },
-        dailyRentalRate: 2,
-        numberInStock: 10,
+        dailyRentalRate,
+        numberInStock,
       });
 
       await movie.save();
@@ -118,17 +124,20 @@ describe('/api/movies', () => {
 
       const movieInDb = await Movie.find({
         _id: movieId,
-        title: '12345',
+        title,
         genre: { _id: genre._id, name: '12345' },
-        dailyRentalRate: 2,
-        numberInStock: 10,
+        dailyRentalRate,
+        numberInStock,
       });
+
+      console.log(movieInDb);
       expect(movieInDb).not.toBeNull();
     });
 
     it('should return the movie if input is valid', async () => {
       const res = await exec();
 
+      console.log(res.body);
       expect(res.body).toHaveProperty('_id');
       expect(res.body).toHaveProperty('title', '12345');
     });
