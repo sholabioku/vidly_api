@@ -239,6 +239,50 @@ describe('/api/movies', () => {
       expect(res.status).toBe(401);
     });
 
+    it('should return 400 if title is less than 5 characters', async () => {
+      newTitle = '1234';
+
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 if title is more than 50 characters', async () => {
+      newTitle = new Array(52).join('a');
+
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 if invalid genre is passed', async () => {
+      genreId = 1;
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 if dailyRentalRate is not a number', async () => {
+      newDailyRentalRate = 'a';
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 if dailyRentalRate is negative number', async () => {
+      newDailyRentalRate = -1;
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 if numberInStock is not a number', async () => {
+      newNumberInStock = 'a';
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 if numberInStock is negative number', async () => {
+      newNumberInStock = -1;
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
     it('should update the movie if input is vaild', async () => {
       await exec();
       const updatedMovie = await Movie.findById(id);
