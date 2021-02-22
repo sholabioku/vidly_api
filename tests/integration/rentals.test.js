@@ -113,5 +113,12 @@ describe('/api/rentals', () => {
       const res = await exec();
       expect(res.status).toBe(401);
     });
+
+    it('should return 400 if customerId is not provided', async () => {
+      customerId = '';
+
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
   });
 });
