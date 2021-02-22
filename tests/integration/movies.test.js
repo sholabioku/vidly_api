@@ -310,9 +310,6 @@ describe('/api/movies', () => {
 
   describe('DELETE /:id', () => {
     let token;
-    let newTitle;
-    let newDailyRentalRate;
-    let newNumberInStock;
     let id;
     let movie;
     let movieId;
@@ -321,7 +318,7 @@ describe('/api/movies', () => {
 
     const exec = async () => {
       return await request(server)
-        .put(`/api/movies/${id}`)
+        .delete(`/api/movies/${id}`)
         .set('x-auth-token', token)
         .send();
     };
@@ -330,7 +327,7 @@ describe('/api/movies', () => {
       genre = new Genre({ name: '12345' });
       await genre.save();
 
-      token = new User().generateAuthToken();
+      token = new User({ isAdmin: true }).generateAuthToken();
       movieId = mongoose.Types.ObjectId();
       genreId = genre._id;
 
@@ -351,6 +348,13 @@ describe('/api/movies', () => {
       token = '';
       const res = await exec();
       expect(res.status).toBe(401);
+    });
+
+    it('should return 403 if client is not admin', async () => {
+      token = new User({ isAdmin: false }).generateAuthToken();
+
+      const res = await exec();
+      expect(res.status).toBe(403);
     });
   });
 });
