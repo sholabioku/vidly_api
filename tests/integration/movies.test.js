@@ -238,5 +238,11 @@ describe('/api/movies', () => {
       const res = await exec();
       expect(res.status).toBe(401);
     });
+
+    it('should update the movie if input is vaild', async () => {
+      await exec();
+      const updatedMovie = await Movie.findById(id);
+      expect(updatedMovie.title).toBe(newTitle);
+    });
   });
 });
