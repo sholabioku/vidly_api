@@ -72,26 +72,11 @@ describe('/api/movies', () => {
   });
 
   describe('POST /', () => {
-    it('should return 401 if client is not logged in', async () => {
-      const genre = new Genre({ name: '12345' });
-      await genre.save();
+    let token;
+    let genre;
 
-      const res = await request(server).post('/api/movies').send({
-        title: '12345',
-        genreId: genre._id,
-        dailyRentalRate: 2,
-        numberInStock: 10,
-      });
-      expect(res.status).toBe(401);
-    });
-
-    it('should save the movie if input is valid', async () => {
-      const genre = new Genre({ name: '12345' });
-      await genre.save();
-
-      const token = new User().generateAuthToken();
-
-      const res = await request(server)
+    const exec = async () => {
+      return await request(server)
         .post('/api/movies')
         .set('x-auth-token', token)
         .send({
@@ -100,6 +85,23 @@ describe('/api/movies', () => {
           dailyRentalRate: 2,
           numberInStock: 10,
         });
+    };
+
+    beforeEach(async () => {
+      token = new User().generateAuthToken();
+
+      genre = new Genre({ name: '12345' });
+      await genre.save();
+    });
+
+    it('should return 401 if client is not logged in', async () => {
+      token = '';
+      const res = await exec();
+      expect(res.status).toBe(401);
+    });
+
+    it('should save the movie if input is valid', async () => {
+      await exec();
 
       const movieId = mongoose.Types.ObjectId();
 
@@ -124,20 +126,7 @@ describe('/api/movies', () => {
     });
 
     it('should return the movie if input is valid', async () => {
-      const genre = new Genre({ name: '12345' });
-      await genre.save();
-
-      const token = new User().generateAuthToken();
-
-      const res = await request(server)
-        .post('/api/movies')
-        .set('x-auth-token', token)
-        .send({
-          title: '12345',
-          genreId: genre._id,
-          dailyRentalRate: 2,
-          numberInStock: 10,
-        });
+      const res = await exec();
 
       expect(res.body).toHaveProperty('_id');
       expect(res.body).toHaveProperty('title', '12345');
