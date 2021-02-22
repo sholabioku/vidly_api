@@ -176,16 +176,67 @@ describe('/api/movies', () => {
         numberInStock,
       });
 
-      console.log(movieInDb);
       expect(movieInDb).not.toBeNull();
     });
 
     it('should return the movie if input is valid', async () => {
       const res = await exec();
-
-      console.log(res.body);
       expect(res.body).toHaveProperty('_id');
       expect(res.body).toHaveProperty('title', '12345');
+    });
+  });
+
+  describe('PUT /:id', () => {
+    let token;
+    let newTitle;
+    let newDailyRentalRate;
+    let newNumberInStock;
+    let id;
+    let movie;
+    let movieId;
+    let genreId;
+    let genre;
+
+    const exec = async () => {
+      return await request(server)
+        .put(`/api/movies/${id}`)
+        .set('x-auth-token', token)
+        .send({
+          title: newTitle,
+          genreId,
+          dailyRentalRate: newDailyRentalRate,
+          numberInStock: newNumberInStock,
+        });
+    };
+
+    beforeEach(async () => {
+      genre = new Genre({ name: '12345' });
+      await genre.save();
+
+      token = new User().generateAuthToken();
+      movieId = mongoose.Types.ObjectId();
+      newTitle = 'updatedTitle';
+      newDailyRentalRate = 20;
+      newNumberInStock = 4;
+      genreId = genre._id;
+
+      movie = new Movie({
+        _id: movieId,
+        title: '12345',
+        genre: { _id: genreId, name: '12345' },
+        dailyRentalRate: 10,
+        numberInStock: 2,
+      });
+
+      await movie.save();
+
+      id = movie._id;
+    });
+
+    it('should return 401 if client is not logged in', async () => {
+      token = '';
+      const res = await exec();
+      expect(res.status).toBe(401);
     });
   });
 });
