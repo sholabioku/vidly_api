@@ -36,4 +36,25 @@ describe('/api/rentals', () => {
       expect(res.body.length).toBe(1);
     });
   });
+
+  describe('GET /:id', () => {
+    it('should return a rental if valid id is passed', async () => {
+      const rental = new Rental({
+        customer: {
+          name: '12345',
+          phone: '12345',
+        },
+        movie: {
+          title: '12345',
+          dailyRentalRate: 2,
+        },
+      });
+
+      await rental.save();
+
+      const res = await request(server).get(`/api/rentals/${rental._id}`);
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('_id');
+    });
+  });
 });
