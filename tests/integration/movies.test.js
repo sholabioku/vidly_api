@@ -141,6 +141,12 @@ describe('/api/movies', () => {
       expect(res.status).toBe(400);
     });
 
+    it('should return 400 if dailyRentalRate is not a number', async () => {
+      dailyRentalRate = 'a';
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
     it('should save the movie if input is valid', async () => {
       await exec();
 
