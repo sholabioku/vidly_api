@@ -244,5 +244,11 @@ describe('/api/movies', () => {
       const updatedMovie = await Movie.findById(id);
       expect(updatedMovie.title).toBe(newTitle);
     });
+
+    it('should return the movie if input is vaild', async () => {
+      const res = await exec();
+      expect(res.body).toHaveProperty('_id');
+      expect(res.body).toHaveProperty('title', 'updatedTitle');
+    });
   });
 });
