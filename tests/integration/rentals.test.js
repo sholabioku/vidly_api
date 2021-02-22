@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
 const { Rental } = require('../../models/rental');
+const { Customer } = require('../../models/customer');
 const { Movie } = require('../../models/movie');
 const { User } = require('../../models/user');
 
@@ -14,6 +15,8 @@ describe('/api/rentals', () => {
   afterEach(async () => {
     await server.close();
     await Rental.deleteMany({});
+    await Movie.deleteMany({});
+    await Customer.deleteMany({});
   });
 
   describe('GET /', () => {
@@ -69,6 +72,8 @@ describe('/api/rentals', () => {
     let customerId;
     let movieId;
     let rental;
+    let movie;
+    let customer;
 
     const exec = async () => {
       return await request(server)
@@ -82,15 +87,22 @@ describe('/api/rentals', () => {
       movieId = mongoose.Types.ObjectId();
       token = new User().generateAuthToken();
 
-      // movie = new Movie({
-      //   _id: movieId,
-      //   title: '12345',
-      //   dailyRentalRate: 2,
-      //   genre: { name: '12345' },
-      //   numberInStock: 10,
-      // });
+      customer = new Customer({
+        _id: customerId,
+        name: '12345',
+        phone: '12345',
+      });
+      await customer.save();
 
-      // await movie.save();
+      movie = new Movie({
+        _id: movieId,
+        title: '12345',
+        dailyRentalRate: 2,
+        genre: { name: '12345' },
+        numberInStock: 10,
+      });
+
+      await movie.save();
 
       rental = new Rental({
         customer: {
@@ -123,6 +135,20 @@ describe('/api/rentals', () => {
 
     it('should return 400 if movieId is not provided', async () => {
       movieId = '';
+
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return invalid customer', async () => {
+      await Customer.deleteMany({});
+
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return invalid movie', async () => {
+      await Movie.deleteMany({});
 
       const res = await exec();
       expect(res.status).toBe(400);
