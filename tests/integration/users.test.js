@@ -31,4 +31,22 @@ describe('/api/users', () => {
       expect(res.status).toBe(401);
     });
   });
+
+  describe('POST /', () => {
+    it('should create a user', async () => {
+      const name = 'Lukman Bioku';
+      const email = 'example@example.com';
+      const password = '123mnb!';
+
+      const res = await request(server)
+        .post('/api/users')
+        .send({ name, email, password });
+      expect(res.status).toBe(200);
+
+      const user = await User.findOne({ email });
+      expect(user).toBeTruthy();
+      expect(user).toHaveProperty('_id');
+      // expect(user.password).not.toBe(password);
+    });
+  });
 });
