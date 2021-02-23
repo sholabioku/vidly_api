@@ -33,9 +33,28 @@ describe('/api/users', () => {
   });
 
   describe('POST /', () => {
+    let userOne;
+    let userTwo;
+
+    beforeEach(async () => {
+      userOne = new User({
+        name: 'Lukman Bioku',
+        email: 'example@example.com',
+        password: '123mnb!',
+      });
+
+      await userOne.save();
+
+      userTwo = new User({
+        name: 'Shola Bioku',
+        email: 'shola@gmail.com',
+        password: 'userTwoPass',
+      });
+      await userTwo.save();
+    });
     it('should create a user', async () => {
-      const name = 'Lukman Bioku';
-      const email = 'example@example.com';
+      const name = 'Bilush';
+      const email = 'bilush@example.com';
       const password = '123mnb!';
 
       const res = await request(server)
@@ -46,7 +65,17 @@ describe('/api/users', () => {
       const user = await User.findOne({ email });
       expect(user).toBeTruthy();
       expect(user).toHaveProperty('_id');
-      // expect(user.password).not.toBe(password);
+      expect(user.password).not.toBe(password);
+    });
+
+    it('should not create user if email is already in use', async () => {
+      const name = 'Lukman Bioku';
+      const email = 'example@example.com';
+      const password = '123mnb!';
+      const res = await request(server)
+        .post('/api/users')
+        .send({ name, email, password });
+      expect(res.status).toBe(400);
     });
   });
 });
