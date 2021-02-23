@@ -24,5 +24,11 @@ describe('/api/users', () => {
 
       expect(res.status).toBe(200);
     });
+
+    it('should return 401 if user is not authenticated', async () => {
+      const res = await request(server).get('/api/users/me');
+
+      expect(res.status).toBe(401);
+    });
   });
 });
