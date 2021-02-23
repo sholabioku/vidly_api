@@ -68,9 +68,19 @@ describe('/api/users', () => {
       expect(user.password).not.toBe(password);
     });
 
-    it('should not create user if email is already in use', async () => {
+    it('should return 400 if user is already registered', async () => {
       const name = 'Lukman Bioku';
       const email = 'example@example.com';
+      const password = '123mnb!';
+      const res = await request(server)
+        .post('/api/users')
+        .send({ name, email, password });
+      expect(res.status).toBe(400);
+    });
+
+    it('should return 400 if name is less than 5 characters', async () => {
+      const name = '1234';
+      const email = 'example1@example.com';
       const password = '123mnb!';
       const res = await request(server)
         .post('/api/users')
