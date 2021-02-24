@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const request = require('supertest');
 
 const { User } = require('../../models/user');
@@ -39,8 +38,8 @@ describe('/api/users', () => {
     beforeEach(async () => {
       userOne = new User({
         name: 'Lukman Bioku',
-        email: 'example@example.com',
-        password: '123mnb!',
+        email: 'lukman@gmail.com',
+        password: 'userOnePass',
       });
 
       await userOne.save();
@@ -70,8 +69,8 @@ describe('/api/users', () => {
 
     it('should return 400 if user is already registered', async () => {
       const name = 'Lukman Bioku';
-      const email = 'example@example.com';
-      const password = '123mnb!';
+      const email = 'lukman@gmail.com';
+      const password = 'userOnePass';
       const res = await request(server)
         .post('/api/users')
         .send({ name, email, password });
