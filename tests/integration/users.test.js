@@ -4,9 +4,26 @@ const { User } = require('../../models/user');
 
 describe('/api/users', () => {
   let server;
+  let userOne;
+  let userTwo;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = require('../../index');
+
+    userOne = new User({
+      name: 'Lukman Bioku',
+      email: 'lukman@gmail.com',
+      password: 'userOnePass',
+    });
+
+    await userOne.save();
+
+    userTwo = new User({
+      name: 'Shola Bioku',
+      email: 'shola@gmail.com',
+      password: 'userTwoPass',
+    });
+    await userTwo.save();
   });
 
   afterEach(async () => {
@@ -32,25 +49,6 @@ describe('/api/users', () => {
   });
 
   describe('POST /', () => {
-    let userOne;
-    let userTwo;
-
-    beforeEach(async () => {
-      userOne = new User({
-        name: 'Lukman Bioku',
-        email: 'lukman@gmail.com',
-        password: 'userOnePass',
-      });
-
-      await userOne.save();
-
-      userTwo = new User({
-        name: 'Shola Bioku',
-        email: 'shola@gmail.com',
-        password: 'userTwoPass',
-      });
-      await userTwo.save();
-    });
     it('should create a user', async () => {
       const name = 'Bilush';
       const email = 'bilush@example.com';
