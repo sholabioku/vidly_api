@@ -4,7 +4,11 @@
   "description": "Backend services for vidly application",
   "main": "index.js",
   "scripts": {
+    "start": "node index",
     "test": "jest --watchAll --verbose --coverage --runInBand --detectOpenHandles"
+  },
+  "engines": {
+    "node": "14.4.0"
   },
   "repository": {
     "type": "git",
