@@ -48,7 +48,7 @@ describe('/api/users', () => {
     });
   });
 
-  describe('POST /', () => {
+  describe('POST /signup', () => {
     it('should create a user', async () => {
       const name = 'Bilush';
       const email = 'bilush@example.com';
@@ -82,6 +82,26 @@ describe('/api/users', () => {
       const res = await request(server)
         .post('/api/users')
         .send({ name, email, password });
+      expect(res.status).toBe(400);
+    });
+  });
+
+  describe('POST /login', () => {
+    it('should login user and return token', async () => {
+      const token = userOne.generateAuthToken();
+
+      const res = await request(server)
+        .post('/api/auth')
+        .set('x-auth-token', token)
+        .send({
+          email: 'lukman@gmail.com',
+          password: 'userOnePass',
+        });
+      expect(res.status).toBe(200);
+    });
+
+    it('should return 400 if bad request', async () => {
+      const res = await request(server).post('/api/auth');
       expect(res.status).toBe(400);
     });
   });
