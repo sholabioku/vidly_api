@@ -1,4 +1,4 @@
 {
   "jwtPrivateKey": "12345",
-  "db": "mongodb+srv://bilush:bilush@cluster0.sjemq.mongodb.net/vidly?retryWrites=true&w=majority"
+  "db": "mongodb://localhost/vidly"
 }
