@@ -18,7 +18,7 @@ module.exports = function () {
   );
   winston.add(
     new winston.transports.MongoDB({
-      db: 'mongodb+srv://bilush:bilush@cluster0.sjemq.mongodb.net/vidly?retryWrites=true&w=majority',
+      db: 'mongodb://localhost/vidly',
       options: {
         useUnifiedTopology: true,
       },
