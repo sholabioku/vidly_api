@@ -16,22 +16,22 @@ module.exports = function () {
       filename: 'logfile.log',
     })
   );
-  winston.add(
-    new winston.transports.MongoDB({
-      db: 'mongodb://localhost/vidly',
-      options: {
-        useUnifiedTopology: true,
-      },
-      level: 'info',
-    })
-  );
-  winston.add(
-    new winston.transports.Console({
-      level: 'info',
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      ),
-    })
-  );
+  // winston.add(
+  //   new winston.transports.MongoDB({
+  //     db: 'mongodb://localhost/vidly',
+  //     options: {
+  //       useUnifiedTopology: true,
+  //     },
+  //     level: 'info',
+  //   })
+  // );
+  // winston.add(
+  //   new winston.transports.Console({
+  //     level: 'info',
+  //     format: winston.format.combine(
+  //       winston.format.colorize(),
+  //       winston.format.simple()
+  //     ),
+  //   })
+  // );
 };
