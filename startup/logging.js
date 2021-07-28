@@ -16,15 +16,15 @@ module.exports = function () {
       filename: 'logfile.log',
     })
   );
-  // winston.add(
-  //   new winston.transports.MongoDB({
-  //     db: 'mongodb://localhost/vidly',
-  //     options: {
-  //       useUnifiedTopology: true,
-  //     },
-  //     level: 'info',
-  //   })
-  // );
+  winston.add(
+    new winston.transports.MongoDB({
+      db: 'mongodb+srv://bilush:bilush@cluster0.sjemq.mongodb.net/vidly?retryWrites=true&w=majority',
+      options: {
+        useUnifiedTopology: true,
+      },
+      level: 'info',
+    })
+  );
   winston.add(
     new winston.transports.Console({
       level: 'info',
